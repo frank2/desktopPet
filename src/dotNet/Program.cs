@@ -24,19 +24,6 @@ namespace DesktopPet
 
 #if PORTABLE
         /// <summary>
-        /// Mutual Exclusion, to allow only 1 instance of this application.
-        /// </summary>
-        /// <remarks>
-        /// Mutex can be made static so that GC doesn't recycle same effect with GC.KeepAlive(mutex) at the end of main
-        /// </remarks>
-        static Mutex mutex = new Mutex(false, "eSheep_Running");
-
-        /// <summary>
-        /// Second Mutual Exclusion, to allow 2 instances of this application.
-        /// </summary>
-        static Mutex mutex2 = new Mutex(false, "eSheep_Running2");
-
-        /// <summary>
         /// Argument: load local animation XML.
         /// </summary>
         public static string ArgumentLocalXML = "";
@@ -86,33 +73,6 @@ namespace DesktopPet
             EmbeddedAssembly.Load("DesktopPet.Portable.Newtonsoft.Json.dll", "Newtonsoft.Json.dll");
 
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
-
-            // if you like to wait a few seconds in case that the instance is just 
-            // shutting down
-            try
-            {
-                if (!mutex.WaitOne(TimeSpan.FromSeconds(1), false))
-                {
-                    iMutexIndex = 1;
-                    try
-                    {
-                        if (!mutex2.WaitOne(TimeSpan.FromSeconds(1), false))
-                        {
-                            MessageBox.Show("Application is already running! Only 2 instances are allowed.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            return;
-                        }
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Can't execute application: " + ex.Message);
-                return;
-            }
 
             // Check and parse the arguments
             string SearchStringLocalXml = "localxml=";
