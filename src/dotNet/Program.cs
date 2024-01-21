@@ -64,8 +64,6 @@ namespace DesktopPet
         [STAThread]
         static void Main(string[] args)
         {
-            int iMutexIndex = 0;
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -116,11 +114,6 @@ namespace DesktopPet
                 // Make sure the application runs!
                 Application.Run();
             }
-
-            if (iMutexIndex == 0)
-                mutex.ReleaseMutex();
-            else if (iMutexIndex == 1)
-                mutex2.ReleaseMutex();
         }
 
 #else
